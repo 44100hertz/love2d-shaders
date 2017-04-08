@@ -28,9 +28,10 @@ vec4 effect( vec4 color, Image texture, vec2 tc, vec2 screen_coords )
     float off_x = is_left ? tc.x * 20 : -tc.x * 20;
     float total = offset - tc.y * 40 - off_x + sin(tc.y*100 + tc.x*200) * 0.1;
 
-    if (mod(total, 1) < 0.5 && mod((tc.y+tc.x+0.25) * screenwid, 2) < 1) total -= 1;
+    if (mod((tc.x+tc.y) * screenwid * 0.5 + 0.2, 1) < mod(total, 1)) total -= 1;
 
     int mod1 = int(mod(total, numcols));
 
-    return col[mod1];
+    float fade = tc.y*5 - 4;
+    return vec4(col[mod1].rgb, 1-fade);
 }
