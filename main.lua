@@ -21,8 +21,12 @@ love.draw = function ()
    shader:send("offset", offset)
    offset = offset + 0.05
    canvas:renderTo(function ()
+         lg.clear(165, 103, 166)
          lg.draw(img)
    end)
+   if arg[2]=="dump" then
+      canvas:newImageData():encode("tga", counter .. ".tga")
+   end
    lg.setShader()
    lg.draw(canvas, 0,0,0, scale)
    counter = counter + 1
