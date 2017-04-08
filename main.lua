@@ -1,16 +1,29 @@
 local lg = love.graphics
 
 local img = lg.newImage("testimage.png")
-local shader = lg.newShader("shaders/posterize.glsl")
-local luma = 0
+local w,h = img:getDimensions()
+
+local shader = lg.newShader("shaders/waterfalls.glsl")
+
+local scale = 2
 
 love.load = function ()
-   love.window.setMode(img:getDimensions())
-   lg.setShader(shader)
+   love.window.setMode(w*2, h*2)
 end
 
+local canvas = lg.newCanvas(w,h)
+canvas:setFilter("nearest", "nearest")
+
+local offset = 0
+local counter = 0
 love.draw = function ()
-   lg.setColor(luma, luma, luma)
-   lg.draw(img)
-   luma = (luma + 1) % 255
+   lg.setShader(shader)
+   shader:send("offset", offset)
+   offset = offset + 0.05
+   canvas:renderTo(function ()
+         lg.draw(img)
+   end)
+   lg.setShader()
+   lg.draw(canvas, 0,0,0, scale)
+   counter = counter + 1
 end

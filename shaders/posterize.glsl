@@ -1,12 +1,12 @@
 // ripped from https://love2d.org/wiki/love.graphics.newShader
 
-uniform int levels = 8;
+uniform int levels = 15;
 
 #ifdef PIXEL
 vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
     vec4 texcolor = Texel(texture, texture_coords);
-    return ceil(texcolor * color * levels) / levels;
+    return floor(texcolor * color * levels + 0.5) / levels;
 }
 #endif
 
